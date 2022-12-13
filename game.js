@@ -3,3 +3,4 @@ function Game() {
     this.milleniumFalcon = null
     this.stormtrooper = null
 }
+

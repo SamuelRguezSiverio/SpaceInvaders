@@ -1,0 +1,75 @@
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: #000020;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.gameContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    width: 320px;
+    height: 480px;
+    background: url('/assets/backgroundSpace.png');
+    animation: scroll-background 10s linear infinite;
+    box-shadow: 0 2px 15px #9068d8;
+    position: relative;
+    z-index: -1;   
+}
+
+@keyframes scroll-background{
+    from {
+    background-position-x: 0px;
+    }
+    to {
+    background-position-y: 480px;
+    }
+  }
+
+header {
+    font-family: 'Dela Gothic One';
+    font-family: 'Roboto', sans-serif;
+    padding: 5px;
+    text-align: center;
+    color: white;
+    background-color: black;
+}
+
+footer {
+    font-family: 'Dela Gothic One';
+    font-family: 'Roboto', sans-serif;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    background-color: black;
+    color: white;
+}
+
+#milleniumFalcon {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 410px;
+    left: 135px;
+    z-index: 1;
+}
+
+/* 
+font-face{
+    font font-family
+    source;
+} */
+
+/* 160
+36,5 */
