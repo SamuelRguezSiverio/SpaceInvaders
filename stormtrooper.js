@@ -35,4 +35,3 @@ window.addEventListener('keydown', function (e) {
     }
     moving = !moving;
   })
-  /* repairing*/

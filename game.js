@@ -65,3 +65,6 @@ function Game() {
     this.position = {left: 135, top: 410};
     this.direction = 0;
 }
+
+
+// PRUEBA
