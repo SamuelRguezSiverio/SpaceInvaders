@@ -1,5 +1,5 @@
 export function MilleniumFalcon() {
-this.position = {left: 135, top: 410}
+this.position = {left: 135}
 this.direction = 0
 this.domMilleniumFalcon = document.getElementById('milleniumFalcon')
 }

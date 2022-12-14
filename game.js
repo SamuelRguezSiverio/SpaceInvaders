@@ -1,70 +1,55 @@
 import { MilleniumFalcon } from "./millenium_falcon.js"
-const milleniumFalcon1 = new MilleniumFalcon()
-
 import { Stormtrooper } from "./stormtrooper.js"
-const stormtrooper1 = new Stormtrooper()
-
-function update(){
-    milleniumFalcon1.update()
-    stormtrooper1.update()
-}
-
-
-function draw(){
-    milleniumFalcon1.draw()
-    stormtrooper1.update()
-}
-
-
-function gameLoop() {
-    update()
-    draw()
-}
-
-window.addEventListener('keydown', function(e) {
-    if(e.key === 'ArrowLeft') {
-        milleniumFalcon1.direction = -1
-    } else if (e.key === 'ArrowRight') {
-        milleniumFalcon1.direction = 1
-    }
-})
-
-setInterval(gameLoop, 75)
-
-
-
-
-/*Game.prototype.milleniumFalconCollision = function() {
-    if (this.milleniumFalcon1)
-}*/
-
-
-
-
-/*Game.prototype.gameLoop = function() {
-    this.update()
-    if (this.stormtrooperBullet){
-        clearInterval(this.gameInterval)
-        this.gameOver()
-        return
-    }
-    this.draw()
-}*/
-
-
-
-//gameLoop
-//setInterval 
-
-
+import { Bullet } from "./bullet.js"
 
 function Game() {
-    this.score = 0;
-    this.milleniumFalcon = null;
-    this.stormtrooper = null;
-    this.position = {left: 135, top: 410};
-    this.direction = 0;
+    this.milleniumFalcon1 = new MilleniumFalcon()
+    this.stormtrooper1 = new Stormtrooper()
+    this.bindedGameLoop = this.gameLoop.bind(this)
+
 }
 
+Game.prototype.gameLoop = function() {
+    this.update()
+    this.draw()
+}
 
-// PRUEBA
+Game.prototype.update = function() {
+    this.milleniumFalcon1.update()
+    this.stormtrooper1.update()
+    // this.bullet1.update()
+}
+
+Game.prototype.draw = function(){
+    this.milleniumFalcon1.draw()
+    this.stormtrooper1.draw()
+    // this.bullet1.draw()
+}
+
+Game.prototype.start = function(){
+    this.listenKeys()
+    setInterval(this.bindedGameLoop, 75)
+}
+
+Game.prototype.listenKeys = function(){
+    window.addEventListener('keydown', (e) => { // Hemos utilizado arrow function
+        if (e.key === 'ArrowLeft') {
+            this.milleniumFalcon1.direction = -1
+        } else if (e.key === 'ArrowRight') {
+            this.milleniumFalcon1.direction = 1
+        } if (e.code === 'Space'){
+            var bullet1 = new Bullet(milleniumFalcon1.left + 25)
+            bullet1.draw()
+            bullet1.update()
+            console.log(bullet1)
+            
+
+        }
+    })
+}
+
+const game = new Game()
+game.start()
+
+
+
