@@ -19,7 +19,7 @@ Bullet.prototype.draw = function() {
     this.father[0].appendChild(this.sprite)
 }  
 
-
+// prueba
 
 // Bullet.prototype.destroy = function() {
 //     console.log(this.sprite)
