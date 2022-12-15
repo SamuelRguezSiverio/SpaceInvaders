@@ -17,13 +17,11 @@ Game.prototype.gameLoop = function() {
 Game.prototype.update = function() {
     this.milleniumFalcon1.update()
     this.stormtrooper1.update()
-    // this.bullet1.update()
 }
 
 Game.prototype.draw = function(){
     this.milleniumFalcon1.draw()
     this.stormtrooper1.draw()
-    // this.bullet1.draw()
 }
 
 Game.prototype.start = function(){
@@ -38,11 +36,11 @@ Game.prototype.listenKeys = function(){
         } else if (e.key === 'ArrowRight') {
             this.milleniumFalcon1.direction = 1
         } if (e.code === 'Space'){
-            var bullet1 = new Bullet(milleniumFalcon1.left + 25)
+            var bullet1 = new Bullet(this.milleniumFalcon1.position.left + 25)
             bullet1.draw()
-            bullet1.update()
+            bullet1.update()            
             console.log(bullet1)
-            
+
 
         }
     })
