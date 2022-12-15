@@ -63,6 +63,8 @@ footer {
     position: absolute;
     z-index: 1;
     border-radius: 50%;
+    left: 135px;
+    top: 15px
 }
 
 .bullet {
@@ -80,4 +82,5 @@ footer {
     position: absolute;
     z-index: 1;
     top: 410px;
+    left: 135px;
 }
