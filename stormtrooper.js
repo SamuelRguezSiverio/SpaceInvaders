@@ -19,5 +19,3 @@ export function Stormtrooper(paramLeft, paramTop) {
     this.domStormtrooper.style.left = this.position.left + "px"
     this.domStormtrooper.style.top = this.position.top + "px"
   }
-  
-  

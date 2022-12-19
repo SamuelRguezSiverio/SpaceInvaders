@@ -57,18 +57,17 @@ footer {
 }
 
 #stormtrooper {
-    background-color: rgb(150, 50, 180);
+    background: url('/assets/stormtrooper.png');
     width: 50px;
     height: 50px;
     position: absolute;
     z-index: 1;
-    border-radius: 50%;
     left: 135px;
     top: 15px
 }
 
 .bullet {
-    background-color: rgb(38, 255, 0);
+    background: url('/assets/bullet.png');
     width: 2px;
     height: 25px;
     position: absolute;
@@ -76,7 +75,7 @@ footer {
 }
 
 #milleniumFalcon {
-    background-color: white;
+    background: url('/assets/milleniumFalcon.png');
     width: 50px;
     height: 50px;
     position: absolute;
