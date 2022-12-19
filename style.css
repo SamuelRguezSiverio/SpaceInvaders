@@ -28,6 +28,19 @@ body {
     z-index: -1;   
 }
 
+.gameStart {
+    width: 320px;
+    height: 480px;
+    background-color: white;
+    box-shadow: 0 2px 15px #9068d8;
+    position: relative;
+    z-index: 1;   
+}
+
+.startText {
+    color: black;
+}
+
 @keyframes scroll-background{
     from {
     background-position-x: 0px;
@@ -58,11 +71,11 @@ footer {
 
 #stormtrooper {
     background: url('/assets/stormtrooper.png');
-    width: 50px;
+    background-size: contain;
+    width: 36px;
     height: 50px;
     position: absolute;
     z-index: 1;
-    left: 135px;
     top: 15px
 }
 

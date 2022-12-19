@@ -6,7 +6,7 @@ export function MilleniumFalcon() {
     
     MilleniumFalcon.prototype.update =  function () {
         if (this.direction === 1 && this.position.left < 265) {
-            this.position.left += 10
+            this.position.left += 10 
         } else if (this.direction === -1 && this.position.left > 5) {
             this.position.left -= 10
         }
