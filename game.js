@@ -6,7 +6,7 @@ function Game() {
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bullets = []
-  this.stormtroopers = [ new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),  ]
+  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
@@ -18,7 +18,7 @@ function Game() {
 Game.prototype.gameLoop = function () {
   this.update()
   this.draw()
-  
+
 }
 
 Game.prototype.update = function () {
@@ -28,21 +28,22 @@ Game.prototype.update = function () {
   this.removeStormtroopers()
   this.updateBullets()
   this.updateStormtroopers()
+  this.gameOver()
 }
 
-Game.prototype.draw = function() {
+Game.prototype.draw = function () {
   this.milleniumFalcon1.draw()
   this.drawStormtroopers()
   this.drawBullets()
 }
 
-Game.prototype.updateStormtroopers = function() {
+Game.prototype.updateStormtroopers = function () {
   for (let i = 0; i < this.stormtroopers.length; i++) {
     this.stormtroopers[i].updateX()
   }
 }
 
-Game.prototype.drawStormtroopers = function(){
+Game.prototype.drawStormtroopers = function () {
   for (let i = 0; i < this.stormtroopers.length; i++) {
     this.stormtroopers[i].draw()
   }
@@ -57,7 +58,7 @@ Game.prototype.initialScreen = function () {
   this.listenKeys()
 }
 
-Game.prototype.startGame = function() {
+Game.prototype.startGame = function () {
   this.gameTimer = setInterval(this.bindedGameLoop, 75)
 }
 
@@ -85,26 +86,40 @@ Game.prototype.removeStormtroopers = function () {
   this.stormtroopers = this.stormtroopers.filter((stormtrooper) => stormtrooper.destroyed === false)
 }
 
+Game.prototype.gameOver = function () {
+  for (let i = 0; i < this.stormtroopers.length; i++) {
+    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 400) {
+      console.log('holiii')
+      clearInterval(this.gameTimer)
+      console.log(this.gameTimer)
+      break
+    } //llamamos a la pantalla de GameOverScreen
+  }
+}
+
 Game.prototype.bulletStormtrooperCollision = function () {
   for (let i = 0; i < this.bullets.length; i++) {
-    for ( let j = 0; j < this.stormtroopers.length; j++) {
-    const bulletLeft = this.bullets[i].position.left
-    const stormtrooperRight = this.stormtroopers[j].position.left + this.stormtroopers[j].width
-    const bulletRight = this.bullets[i].position.left + this.bullets[i].width
-    const stormtrooperLeft = this.stormtroopers[j].position.left
-    const bulletTop = this.bullets[i].position.top
-    const stormtrooperBottom = this.stormtroopers[j].position.top + this.stormtroopers[j].height
-    const bulletBottom = this.bullets[i].position.top + this.bullets[i].height
-    const stormtrooperTop = this.stormtroopers[j].position.top
+    for (let j = 0; j < this.stormtroopers.length; j++) {
+      const bulletLeft = this.bullets[i].position.left
+      const stormtrooperRight = this.stormtroopers[j].position.left + this.stormtroopers[j].width
+      const bulletRight = this.bullets[i].position.left + this.bullets[i].width
+      const stormtrooperLeft = this.stormtroopers[j].position.left
+      const bulletTop = this.bullets[i].position.top
+      const stormtrooperBottom = this.stormtroopers[j].position.top + this.stormtroopers[j].height
+      const bulletBottom = this.bullets[i].position.top + this.bullets[i].height
+      const stormtrooperTop = this.stormtroopers[j].position.top
 
-    if (bulletLeft < stormtrooperRight && bulletRight > stormtrooperLeft && bulletTop < stormtrooperBottom && bulletBottom > stormtrooperTop) {
-      this.bullets[i].destroy()
-      if ( this.stormtroopers[j].destroyed === false ) {
-      this.stormtroopers[j].destroy()
-      this.scoreCounter += 15
-      this.score[0].innerHTML = parseInt(this.scoreCounter)
-      console.log(this.scoreCounter)
-      }
+      if (bulletLeft < stormtrooperRight && bulletRight > stormtrooperLeft && bulletTop < stormtrooperBottom && bulletBottom > stormtrooperTop) {
+        this.bullets[i].destroy()
+        if (this.stormtroopers[j].destroyed === false) {
+          this.stormtroopers[j].destroy()
+          this.scoreCounter += 15
+          this.score[0].innerHTML = parseInt(this.scoreCounter)
+          console.log(this.scoreCounter)
+          for (let i = 0; i < this.stormtroopers.length; i++) {
+            this.stormtroopers[i].speed += 10
+          }
+        }
       }
     }
   }
@@ -118,8 +133,8 @@ Game.prototype.listenKeys = function () {
       this.milleniumFalcon1.direction = 1
     } if (e.code === 'Space') {
       this.addNewBullet()
-    } 
-    if (e.key === 'Enter'){
+    }
+    if (e.key === 'Enter') {
       document.getElementsByClassName("gameStart")[0].remove()
       this.startGame()
     }
@@ -130,9 +145,9 @@ Game.prototype.listenKeys = function () {
 // Te lo devuelvo
 
 
-Game.prototype.playMyAudio = function(){
+Game.prototype.playMyAudio = function () {
   document.getElementById("myAudio").play();
- }
+}
 
 
 

@@ -46,6 +46,15 @@ Stormtrooper.prototype.draw = function () {
   }
 }
 
+
+
+
+// Stormtrooper.prototype.stormtrooperFaster = function () {
+//    for (let i = 0; i < this.stormtroopers.length; i++) {
+//      if (this.stormtroopers[i] < ) {
+//       this.speed += 10}
+  
+
 Stormtrooper.prototype.destroy = function () {
   this.father[0].removeChild(this.domStormtrooper)
   this.destroyed = true
