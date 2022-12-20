@@ -7,6 +7,7 @@ export function Bullet(x) {
     this.sprite = document.createElement('div')
     this.father = document.getElementsByClassName('main')
     this.destroyed = false
+    this.isFirstRender = true
   }
   
   Bullet.prototype.update = function () {
@@ -18,10 +19,13 @@ export function Bullet(x) {
   Bullet.prototype.draw = function () {
     this.sprite.style.left = this.position.left + "px"
     this.sprite.style.top = this.position.top + "px"
-    this.sprite.setAttribute('class', 'bullet')
-    this.father[0].appendChild(this.sprite)
     if (this.position.top < -25) {
       this.destroy()
+    }
+    if ( this.isFirstRender === true ){
+      this.sprite.setAttribute('class', 'bullet')
+      this.father[0].appendChild(this.sprite)
+      this.isFirstRender = false
     }
   }
   

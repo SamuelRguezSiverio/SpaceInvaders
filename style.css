@@ -29,16 +29,27 @@ body {
 }
 
 .gameStart {
+    opacity: 0.8;
     width: 320px;
     height: 480px;
-    background-color: white;
+    background-color: #b26fe5;
     box-shadow: 0 2px 15px #9068d8;
-    position: relative;
+    position: absolute;
     z-index: 1;   
 }
 
 .startText {
     color: black;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 0 0 50px yellow;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 450px;
+    font-size: 30px;
+    width: 300px;
+    text-align: center;
+    -webkit-text-stroke: medium;
 }
 
 @keyframes scroll-background{
@@ -76,7 +87,8 @@ footer {
     height: 50px;
     position: absolute;
     z-index: 1;
-    top: 15px
+    transition: all 0.1s ease;
+
 }
 
 .bullet {
@@ -84,7 +96,9 @@ footer {
     width: 2px;
     height: 25px;
     position: absolute;
-    z-index: 2;
+    z-index: 1;
+    transition: all 0.1s ease;
+
 }
 
 #milleniumFalcon {
@@ -93,6 +107,10 @@ footer {
     height: 50px;
     position: absolute;
     z-index: 1;
-    top: 410px;
-    left: 135px;
+    transition: all 0.1s ease;
+
 }
+
+#audio{
+    display: none
+    }

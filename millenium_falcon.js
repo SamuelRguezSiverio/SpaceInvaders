@@ -1,7 +1,9 @@
 export function MilleniumFalcon() {
-    this.position = {left: 135}
+    this.position = {left: 135, top: 410}
     this.direction = 0
-    this.domMilleniumFalcon = document.getElementById('milleniumFalcon')
+    this.domMilleniumFalcon = document.createElement('div')
+    this.father = document.getElementsByClassName('main')
+    this.isFirstRender = true
     }
     
     MilleniumFalcon.prototype.update =  function () {
@@ -15,5 +17,11 @@ export function MilleniumFalcon() {
     
     MilleniumFalcon.prototype.draw = function() {
         this.domMilleniumFalcon.style.left = this.position.left + "px"
+        this.domMilleniumFalcon.style.top = this.position.top + "px"
+        if ( this.isFirstRender === true ){
+            this.domMilleniumFalcon.setAttribute('id', 'milleniumFalcon')
+            this.father[0].appendChild(this.domMilleniumFalcon) 
+            this.isFirstRender = false
+          }
     }  
     
