@@ -46,11 +46,11 @@ Game.prototype.drawStormtroopers = function(){
 }
 
 Game.prototype.start = function () {
-  // const divStart = document.createElement('div')
-  // const divFatherStart = document.getElementsByClassName('gameContainer')
-  // divStart.setAttribute('class', 'gameStart')
-  // divStart.innerHTML = `<span class="startText">PRESS ENTER TO START NEW GAME</span>`
-  // divFatherStart[0].appendChild(divStart)
+  const divStart = document.createElement('div')
+  const divFatherStart = document.getElementsByClassName('gameContainer')
+  divStart.setAttribute('class', 'gameStart')
+  divStart.innerHTML = `<span class="startText">PRESS ENTER TO START NEW GAME</span>`
+  divFatherStart[0].appendChild(divStart)
   this.listenKeys()
   const gameTimer = setInterval(this.bindedGameLoop, 75)
 }
@@ -100,6 +100,8 @@ Game.prototype.listenKeys = function () {
       this.milleniumFalcon1.direction = 1
     } if (e.code === 'Space') {
       this.addNewBullet()
+    } if (e.key === 'Enter'){
+      document.getElementsByClassName("gameStart").remove();
     }
   })
 }
