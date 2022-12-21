@@ -11,10 +11,15 @@ function Game() {
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
   this.gameTimer = null
-  this.audio = document.getElementById("myAudio");
+  this.sounds = {
+    shoot: new Audio('assets/LaserShoot.mp3'),
+    stormtrooperDestroyed: new Audio('assets/StormtrooperDestroyed.mp3'),
+    gameOverSound: new Audio('assets/hansolo_badfeeling.mp3'),
+    startGameSound: new Audio('assets/spaceInvaderMusic.mp3'),
+  }
+
 }
-
-
+ 
 Game.prototype.gameLoop = function () {
   this.update()
   this.draw()
@@ -51,16 +56,22 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
+  this.milleniumFalcon1 = new MilleniumFalcon()
+  this.bullets = []
+  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
+  this.score[0].innerHTML = '0'
+  this.scoreCounter = 0
+  this.gameTimer = null
   const divStart = document.createElement('div')
   const divFatherStart = document.getElementsByClassName('gameContainer')
   divStart.setAttribute('class', 'gameStart')
-  divStart.innerHTML = `<span class="startText">PRESS ENTER TO START NEW GAME</span>`
   divFatherStart[0].appendChild(divStart)
   this.listenKeys()
 }
 
 Game.prototype.startGame = function () {
   this.gameTimer = setInterval(this.bindedGameLoop, 75)
+
 }
 
 Game.prototype.addNewBullet = function () {
@@ -89,11 +100,9 @@ Game.prototype.removeStormtroopers = function () {
 
 Game.prototype.gameOver = function () {
   for (let i = 0; i < this.stormtroopers.length; i++) {
-    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 410) {
-      console.log('holiii')
+    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 430) {
       clearInterval(this.gameTimer)
-      console.log(this.gameTimer)
-      setTimeout(this.gameOverScreen(), 5000)
+      this.gameOverScreen()
       break
     } 
   }
@@ -105,7 +114,8 @@ Game.prototype.gameOverScreen = function () {
   divGameOver.setAttribute('class', 'gameOver')
   divGameOver.innerHTML = `<span class="gameOverText">Game Over Rebel. Han Solo is upset</span>`
   divFatherGameOver[0].appendChild(divGameOver)
-  // this.listenKeys()
+  this.listenKeys()
+  this.sounds.gameOverSound.play()
 }
 
 Game.prototype.bulletStormtrooperCollision = function () {
@@ -124,11 +134,11 @@ Game.prototype.bulletStormtrooperCollision = function () {
         this.bullets[i].destroy()
         if (this.stormtroopers[j].destroyed === false) {
           this.stormtroopers[j].destroy()
+          this.sounds.stormtrooperDestroyed.play()
           this.scoreCounter += 15
           this.score[0].innerHTML = parseInt(this.scoreCounter)
-          console.log(this.scoreCounter)
           for (let i = 0; i < this.stormtroopers.length; i++) {
-            this.stormtroopers[i].speed += 10
+            this.stormtroopers[i].speed += 4
           }
         }
       }
@@ -160,24 +170,33 @@ Game.prototype.listenKeys = function () {
       this.milleniumFalcon1.direction = 1
     } if (e.code === 'Space') {
       this.addNewBullet()
+      this.sounds.shoot.play()
     }
     if (e.key === 'Enter') {
       document.getElementsByClassName("gameStart")[0].remove()
       this.startGame()
+    }
+    if (e.key === 'Backspace') {
+      document.getElementsByClassName("gameOver")[0].remove()
+      this.initialScreen()
     }
   })
 }
 
 
 
-Game.prototype.playMyAudio = function () {
-  document.getElementById("myAudio").play();
-}
 
 
 
 const game = new Game()
 game.initialScreen()
-game.playMyAudio()
+
 // game.gameOverScreen()
 
+
+
+
+
+const ost = 
+ost.volume = 0.05
+    ost.play()
