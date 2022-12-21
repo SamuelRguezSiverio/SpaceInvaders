@@ -5,6 +5,8 @@ import { Bullet } from "./bullet.js"
 function Game() {
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bindedGameLoop = this.gameLoop.bind(this)
+  this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
+
   this.bullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
@@ -17,9 +19,11 @@ function Game() {
     gameOverSound: new Audio('assets/hansolo_badfeeling.mp3'),
     startGameSound: new Audio('assets/spaceInvaderMusic.mp3')
   }
+
   this.sounds.shoot.volume = 0.2
-  this.sounds.stormtrooperDestroyed.volume = 0.1
-  this.sounds.gameOverSound.volume = 0.3
+  this.sounds.stormtrooperDestroyed.volume = 0.2
+  this.sounds.gameOverSound.volume = 0.2
+  this.sounds.startGameSound.volume = 0.2
 }
  
 Game.prototype.gameLoop = function () {
@@ -58,13 +62,7 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
-  this.sounds.startGameSound.play()
-  this.milleniumFalcon1 = new MilleniumFalcon()
-  this.bullets = []
-  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
-  this.score[0].innerHTML = '0'
-  this.scoreCounter = 0
-  this.gameTimer = null
+  window.removeEventListener('keydown', this.bindedAddEventListener )
   const divStart = document.createElement('div')
   const divFatherStart = document.getElementsByClassName('gameContainer')
   divStart.setAttribute('class', 'gameStart')
@@ -72,9 +70,23 @@ Game.prototype.initialScreen = function () {
   this.listenKeys()
 }
 
-Game.prototype.startGame = function () {
-  this.gameTimer = setInterval(this.bindedGameLoop, 75)
+Game.prototype.cleanDOM = function() {
+  const main = document.querySelector('.main')
+  const mainChild = document.querySelectorAll('.main > *')
+  for ( let i = 0; i < mainChild.length; i++ ){
+    main.removeChild(mainChild[i])
+  }
+}
 
+Game.prototype.startGame = function () {
+  this.cleanDOM()
+  this.milleniumFalcon1 = new MilleniumFalcon()
+  this.bullets = []
+  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
+  this.score[0].innerHTML = '0'
+  this.scoreCounter = 0
+  this.gameTimer = null
+  this.gameTimer = setInterval(this.bindedGameLoop, 75)
 }
 
 Game.prototype.addNewBullet = function () {
@@ -116,7 +128,6 @@ Game.prototype.gameOverScreen = function () {
   const divFatherGameOver = document.getElementsByClassName('gameContainer')
   divGameOver.setAttribute('class', 'gameOver')
   divFatherGameOver[0].appendChild(divGameOver)
-  this.listenKeys()
   this.sounds.gameOverSound.play()
 }
 
@@ -150,7 +161,7 @@ Game.prototype.bulletStormtrooperCollision = function () {
 
 Game.prototype.youWin = function () {
   if (this.score[0].innerHTML === "105") {
-    clearInterval
+    clearInterval(this.gameTimer)
     this.youWinScreen()
   }
 }
@@ -160,11 +171,14 @@ Game.prototype.youWinScreen = function () {
   const divFatherYouWin = document.getElementsByClassName('gameContainer')
   divYouWin.setAttribute('class', 'youWin')
   divFatherYouWin[0].appendChild(divYouWin)
-  this.listenKeys()
 }
 
 Game.prototype.listenKeys = function () {
-  window.addEventListener('keydown', (e) => { // Hemos utilizado arrow function
+  window.addEventListener('keydown', this.bindedAddEventListener )
+
+}
+
+Game.prototype.addEventListenerCallBack = function(e) {
     if (e.key === 'ArrowLeft') {
       this.milleniumFalcon1.direction = -1
     } else if (e.key === 'ArrowRight') {
@@ -185,10 +199,7 @@ Game.prototype.listenKeys = function () {
       document.getElementsByClassName("youWin")[0].remove()
       this.initialScreen()
     }
-  })
 }
-
-
 
 
 
