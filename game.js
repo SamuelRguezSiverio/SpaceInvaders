@@ -6,7 +6,6 @@ function Game() {
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
-
   this.bullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
@@ -208,10 +207,6 @@ const game = new Game()
 game.initialScreen()
 
 // game.gameOverScreen()
-
-
-
-
 
 // const ost = 
 // ost.volume = 0.05
