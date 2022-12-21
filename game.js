@@ -11,7 +11,7 @@ function Game() {
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
   this.gameTimer = null
-  // this.audio = document.getElementById("myAudio");
+  this.audio = document.getElementById("myAudio");
 }
 
 
@@ -29,6 +29,7 @@ Game.prototype.update = function () {
   this.updateBullets()
   this.updateStormtroopers()
   this.gameOver()
+  this.youWin()
 }
 
 Game.prototype.draw = function () {
@@ -88,13 +89,23 @@ Game.prototype.removeStormtroopers = function () {
 
 Game.prototype.gameOver = function () {
   for (let i = 0; i < this.stormtroopers.length; i++) {
-    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 400) {
+    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 410) {
       console.log('holiii')
       clearInterval(this.gameTimer)
       console.log(this.gameTimer)
+      setTimeout(this.gameOverScreen(), 5000)
       break
-    } //llamamos a la pantalla de GameOverScreen
+    } 
   }
+}
+
+Game.prototype.gameOverScreen = function () {
+  const divGameOver = document.createElement('div')
+  const divFatherGameOver = document.getElementsByClassName('gameContainer')
+  divGameOver.setAttribute('class', 'gameOver')
+  divGameOver.innerHTML = `<span class="gameOverText">Game Over Rebel. Han Solo is upset</span>`
+  divFatherGameOver[0].appendChild(divGameOver)
+  // this.listenKeys()
 }
 
 Game.prototype.bulletStormtrooperCollision = function () {
@@ -125,6 +136,22 @@ Game.prototype.bulletStormtrooperCollision = function () {
   }
 }
 
+Game.prototype.youWin = function () {
+  if (this.score[0].innerHTML === "105") {
+    clearInterval
+    this.youWinScreen()
+  }
+}
+
+Game.prototype.youWinScreen = function () {
+  const divYouWin = document.createElement('div')
+  const divFatherYouWin = document.getElementsByClassName('gameContainer')
+  divYouWin.setAttribute('class', 'youWin')
+  divYouWin.innerHTML = `<span class="youWinText">YOU WIN. Han Solo is happy</span>`
+  divFatherYouWin[0].appendChild(divYouWin)
+  // this.listenKeys()
+}
+
 Game.prototype.listenKeys = function () {
   window.addEventListener('keydown', (e) => { // Hemos utilizado arrow function
     if (e.key === 'ArrowLeft') {
@@ -141,8 +168,6 @@ Game.prototype.listenKeys = function () {
   })
 }
 
-///prueba 
-// Te lo devuelvo
 
 
 Game.prototype.playMyAudio = function () {
@@ -153,5 +178,6 @@ Game.prototype.playMyAudio = function () {
 
 const game = new Game()
 game.initialScreen()
-// game.playMyAudio()
+game.playMyAudio()
+// game.gameOverScreen()
 
