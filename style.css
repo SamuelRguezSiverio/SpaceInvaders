@@ -37,52 +37,23 @@ body {
 }
 
 .gameOver {
-    opacity: 1;
     width: 320px;
     height: 480px;
-    background-color: #be3b3b;
-    box-shadow: 0 2px 15px #9068d8;
+    background: url('/assets/GameOverSpaceInvaders.gif');
     position: absolute;
     z-index: 1;   
 }
 
-.gameOverText {
-    color: black;
-    font-family: 'Roboto', sans-serif;
-    text-shadow: 0 0 50px yellow;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    height: 450px;
-    font-size: 30px;
-    width: 300px;
-    text-align: center;
-    -webkit-text-stroke: medium;
-}
+
 
 .youWin {
-    opacity: 1;
     width: 320px;
     height: 480px;
-    background-color: #beb53b;
-    box-shadow: 0 2px 15px #9068d8;
+    background: url(/assets/YouWinSpaceInvaders.gif);
     position: absolute;
     z-index: 1;   
 }
 
-.youWinText {
-    color: black;
-    font-family: 'Roboto', sans-serif;
-    text-shadow: 0 0 50px yellow;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    height: 450px;
-    font-size: 30px;
-    width: 300px;
-    text-align: center;
-    -webkit-text-stroke: medium;
-}
 
 @keyframes scroll-background{
     from {

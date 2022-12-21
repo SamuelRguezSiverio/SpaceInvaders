@@ -15,9 +15,11 @@ function Game() {
     shoot: new Audio('assets/LaserShoot.mp3'),
     stormtrooperDestroyed: new Audio('assets/StormtrooperDestroyed.mp3'),
     gameOverSound: new Audio('assets/hansolo_badfeeling.mp3'),
-    startGameSound: new Audio('assets/spaceInvaderMusic.mp3'),
+    startGameSound: new Audio('assets/spaceInvaderMusic.mp3')
   }
-
+  this.sounds.shoot.volume = 0.2
+  this.sounds.stormtrooperDestroyed.volume = 0.1
+  this.sounds.gameOverSound.volume = 0.3
 }
  
 Game.prototype.gameLoop = function () {
@@ -56,6 +58,7 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
+  this.sounds.startGameSound.play()
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
@@ -112,7 +115,6 @@ Game.prototype.gameOverScreen = function () {
   const divGameOver = document.createElement('div')
   const divFatherGameOver = document.getElementsByClassName('gameContainer')
   divGameOver.setAttribute('class', 'gameOver')
-  divGameOver.innerHTML = `<span class="gameOverText">Game Over Rebel. Han Solo is upset</span>`
   divFatherGameOver[0].appendChild(divGameOver)
   this.listenKeys()
   this.sounds.gameOverSound.play()
@@ -157,9 +159,8 @@ Game.prototype.youWinScreen = function () {
   const divYouWin = document.createElement('div')
   const divFatherYouWin = document.getElementsByClassName('gameContainer')
   divYouWin.setAttribute('class', 'youWin')
-  divYouWin.innerHTML = `<span class="youWinText">YOU WIN. Han Solo is happy</span>`
   divFatherYouWin[0].appendChild(divYouWin)
-  // this.listenKeys()
+  this.listenKeys()
 }
 
 Game.prototype.listenKeys = function () {
@@ -180,6 +181,10 @@ Game.prototype.listenKeys = function () {
       document.getElementsByClassName("gameOver")[0].remove()
       this.initialScreen()
     }
+    if (e.key === 'Escape') {
+      document.getElementsByClassName("youWin")[0].remove()
+      this.initialScreen()
+    }
   })
 }
 
@@ -197,6 +202,6 @@ game.initialScreen()
 
 
 
-const ost = 
-ost.volume = 0.05
-    ost.play()
+// const ost = 
+// ost.volume = 0.05
+//     ost.play()
