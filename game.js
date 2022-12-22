@@ -28,7 +28,6 @@ function Game() {
 Game.prototype.gameLoop = function () {
   this.update()
   this.draw()
-
 }
 
 Game.prototype.update = function () {
@@ -146,6 +145,7 @@ Game.prototype.bulletStormtrooperCollision = function () {
         this.bullets[i].destroy()
         if (this.stormtroopers[j].destroyed === false) {
           this.stormtroopers[j].destroy()
+          this.sounds.stormtrooperDestroyed.currentTime = 0.85
           this.sounds.stormtrooperDestroyed.play()
           this.scoreCounter += 15
           this.score[0].innerHTML = parseInt(this.scoreCounter)
@@ -183,6 +183,7 @@ Game.prototype.addEventListenerCallBack = function(e) {
     } else if (e.key === 'ArrowRight') {
       this.milleniumFalcon1.direction = 1
     } if (e.code === 'Space') {
+      this.sounds.shoot.currentTime = 0
       this.addNewBullet()
       this.sounds.shoot.play()
     }
@@ -200,14 +201,14 @@ Game.prototype.addEventListenerCallBack = function(e) {
     }
 }
 
-
-
-
 const game = new Game()
 game.initialScreen()
 
-// game.gameOverScreen()
 
-// const ost = 
-// ost.volume = 0.05
-//     ost.play()
+// hacer que los stormtrooper disparen y resten vidas & crear un límite de vidas para el millenium falcom
+
+// git checkout -b nombredelarama
+// git branch
+// git push origin nombredelarama
+
+
