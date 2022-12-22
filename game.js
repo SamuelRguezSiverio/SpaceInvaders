@@ -205,10 +205,5 @@ const game = new Game()
 game.initialScreen()
 
 
-// hacer que los stormtrooper disparen y resten vidas & crear un límite de vidas para el millenium falcom
-
-// git checkout -b nombredelarama
-// git branch
-// git push origin nombredelarama
 
 
