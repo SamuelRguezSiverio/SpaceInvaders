@@ -22,7 +22,7 @@ function Game() {
   this.sounds.shoot.volume = 0.2
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
-  this.sounds.startGameSound.volume = 0.2
+  this.sounds.startGameSound.volume = 0.1
 }
  
 Game.prototype.gameLoop = function () {
@@ -189,8 +189,7 @@ Game.prototype.addEventListenerCallBack = function(e) {
     }
     if (e.key === 'Enter') {
       document.getElementsByClassName("gameStart")[0].remove()
-      this.startGame()
-    }
+      this.startGame()    }
     if (e.key === 'Backspace') {
       document.getElementsByClassName("gameOver")[0].remove()
       this.initialScreen()

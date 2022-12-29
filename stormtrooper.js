@@ -46,7 +46,6 @@ Stormtrooper.prototype.draw = function () {
   }
 }
 
-
 Stormtrooper.prototype.destroy = function () {
   this.father[0].removeChild(this.domStormtrooper)
   this.destroyed = true
