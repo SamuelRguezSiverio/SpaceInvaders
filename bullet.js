@@ -1,5 +1,6 @@
-export function Bullet(x) {
+export function Bullet(x, y, z) {
   this.position = { left: x, top: 410 }
+  this.positionStormtrooperShoot = { left: x, top: y, direction: z}
   this.direction = 1
   this.speed = 10
   this.width = 2

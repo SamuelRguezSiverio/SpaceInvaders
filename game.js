@@ -7,6 +7,7 @@ function Game() {
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
   this.bullets = []
+  this.bulletStormtrooper = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
   this.score[0].innerHTML = '0'
@@ -34,9 +35,10 @@ Game.prototype.update = function () {
   this.bulletStormtrooperCollision()
   this.milleniumFalcon1.update()
   this.removeBullets()
+  this.removeBulletsStormtrooper()
   this.removeStormtroopers()
   this.updateBullets()
-  this.updateStormtroopers()
+  this.updateBulletsStormtrooper()
   this.gameOver()
   this.youWin()
 }
@@ -45,6 +47,7 @@ Game.prototype.draw = function () {
   this.milleniumFalcon1.draw()
   this.drawStormtroopers()
   this.drawBullets()
+  this.drawBulletsStormtrooper()
 }
 
 Game.prototype.updateStormtroopers = function () {
@@ -80,11 +83,32 @@ Game.prototype.startGame = function () {
   this.cleanDOM()
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bullets = []
+  this.bulletStormtrooper = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
   this.gameTimer = null
   this.gameTimer = setInterval(this.bindedGameLoop, 75)
+}
+
+Game.prototype.addNewBulletStormtrooper = function () {
+  this.bulletStormtrooper.push(new Bullet(this.positionStormtrooperShoot.position.left, this.positionStormtrooperShoot.position.top, -1))
+}
+
+Game.prototype.updateBulletsStormtrooper = function () {
+  for (let i = 0; i < this.bulletStormtrooper.length; i++) {
+    this.bulletStormtrooper[i].update()
+  }
+}
+
+Game.prototype.drawBulletsStormtrooper = function () {
+  for (let i = 0; i < this.bulletStormtrooper.length; i++) {
+    this.bulletStormtrooper[i].draw()
+  }
+}
+
+Game.prototype.removeBulletsStormtrooper = function () {
+  this.bulletStormtrooper = this.bulletStormtrooper.filter((bulletStormtrooper) => bulletStormtrooper.destroyed === false)
 }
 
 Game.prototype.addNewBullet = function () {
@@ -204,5 +228,17 @@ const game = new Game()
 game.initialScreen()
 
 
+
+/*
+1. Añadir array en game para guardar balas de los stormtroopers
+  - Línea 10 en game.js
+
+2. Pasar a las balas por parametros x, y e direction (para poder elegir donde aparacen y si suben o bajan (ya no salen solo del milleiunFalcon1).
+  - Línea 1 y 3 bullet.js añadido los parámetros
+  
+3. Crear un nuevo método que genere una bala siempre que el array de las balas nuevas este vacio (esto conlleva seleccionar un stormtrooper random para conocer donde aparece la bala, aunque inicialmente podemos hacerlo a mano para ver que funciona).
+  - Línea 91 a la 109 game.js
+
+*/
 
 
