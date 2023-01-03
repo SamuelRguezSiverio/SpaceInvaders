@@ -7,7 +7,7 @@ function Game() {
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
   this.bullets = []
-  this.bulletStormtrooper = []
+  this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
   this.score[0].innerHTML = '0'
@@ -25,7 +25,7 @@ function Game() {
   this.sounds.gameOverSound.volume = 0.2
   this.sounds.startGameSound.volume = 0.1
 }
- 
+
 Game.prototype.gameLoop = function () {
   this.update()
   this.draw()
@@ -33,12 +33,13 @@ Game.prototype.gameLoop = function () {
 
 Game.prototype.update = function () {
   this.bulletStormtrooperCollision()
-  this.milleniumFalcon1.update()
+  this.bulletMileniumFalconCollision()
   this.removeBullets()
-  this.removeBulletsStormtrooper()
   this.removeStormtroopers()
+  this.milleniumFalcon1.update()
   this.updateBullets()
-  this.updateBulletsStormtrooper()
+  this.updateStormtroopers()
+  this.stormtrooperShoot()
   this.gameOver()
   this.youWin()
 }
@@ -47,7 +48,6 @@ Game.prototype.draw = function () {
   this.milleniumFalcon1.draw()
   this.drawStormtroopers()
   this.drawBullets()
-  this.drawBulletsStormtrooper()
 }
 
 Game.prototype.updateStormtroopers = function () {
@@ -63,7 +63,7 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
-  window.removeEventListener('keydown', this.bindedAddEventListener )
+  window.removeEventListener('keydown', this.bindedAddEventListener)
   const divStart = document.createElement('div')
   const divFatherStart = document.getElementsByClassName('gameContainer')
   divStart.setAttribute('class', 'gameStart')
@@ -71,53 +71,28 @@ Game.prototype.initialScreen = function () {
   this.listenKeys()
 }
 
-Game.prototype.cleanDOM = function() {
+Game.prototype.cleanDOM = function () {
   const main = document.querySelector('.main')
   const mainChild = document.querySelectorAll('.main > *')
-  for ( let i = 0; i < mainChild.length; i++ ){
+  for (let i = 0; i < mainChild.length; i++) {
     main.removeChild(mainChild[i])
   }
 }
 
 Game.prototype.startGame = function () {
-  this.cleanDOM()
-  this.milleniumFalcon1 = new MilleniumFalcon()
-  this.bullets = []
-  this.bulletStormtrooper = []
-  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
-  this.score[0].innerHTML = '0'
-  this.scoreCounter = 0
-  this.gameTimer = null
   this.gameTimer = setInterval(this.bindedGameLoop, 75)
 }
 
-Game.prototype.addNewBulletStormtrooper = function () {
-  this.bulletStormtrooper.push(new Bullet(this.positionStormtrooperShoot.position.left, this.positionStormtrooperShoot.position.top, -1))
-}
-
-Game.prototype.updateBulletsStormtrooper = function () {
-  for (let i = 0; i < this.bulletStormtrooper.length; i++) {
-    this.bulletStormtrooper[i].update()
-  }
-}
-
-Game.prototype.drawBulletsStormtrooper = function () {
-  for (let i = 0; i < this.bulletStormtrooper.length; i++) {
-    this.bulletStormtrooper[i].draw()
-  }
-}
-
-Game.prototype.removeBulletsStormtrooper = function () {
-  this.bulletStormtrooper = this.bulletStormtrooper.filter((bulletStormtrooper) => bulletStormtrooper.destroyed === false)
-}
-
 Game.prototype.addNewBullet = function () {
-  this.bullets.push(new Bullet(this.milleniumFalcon1.position.left + 25))
+  this.bullets.push(new Bullet(this.milleniumFalcon1.position.left + 25, 410, 1))
 }
 
 Game.prototype.updateBullets = function () {
   for (let i = 0; i < this.bullets.length; i++) {
     this.bullets[i].update()
+  }
+  for (let i = 0; i < this.stormtroopersBullets.length; i++) {
+    this.stormtroopersBullets[i].update()
   }
 }
 
@@ -125,10 +100,14 @@ Game.prototype.drawBullets = function () {
   for (let i = 0; i < this.bullets.length; i++) {
     this.bullets[i].draw()
   }
+  for (let i = 0; i < this.stormtroopersBullets.length; i++) {
+    this.stormtroopersBullets[i].draw()
+  }
 }
 
 Game.prototype.removeBullets = function () {
   this.bullets = this.bullets.filter((bullet) => bullet.destroyed === false)
+  this.stormtroopersBullets = this.stormtroopersBullets.filter((bullet) => bullet.destroyed === false)
 }
 
 Game.prototype.removeStormtroopers = function () {
@@ -141,11 +120,27 @@ Game.prototype.gameOver = function () {
       clearInterval(this.gameTimer)
       this.gameOverScreen()
       break
-    } 
+    }
+  }
+}
+
+Game.prototype.stormtrooperShoot = function () {
+  if (this.stormtroopersBullets.length === 0) {
+    const whoShoot = Math.floor(Math.random() * this.stormtroopers.length)
+    const selectedStormtrooper = this.stormtroopers[whoShoot]
+    this.stormtroopersBullets.push(new Bullet(selectedStormtrooper.position.left + selectedStormtrooper.width / 2, selectedStormtrooper.position.top + selectedStormtrooper.height, -1))
   }
 }
 
 Game.prototype.gameOverScreen = function () {
+  this.cleanDOM()
+  this.milleniumFalcon1 = new MilleniumFalcon()
+  this.bullets = []
+  this.stormtroopersBullets = []
+  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
+  this.score[0].innerHTML = '0'
+  this.scoreCounter = 0
+  this.gameTimer = null
   const divGameOver = document.createElement('div')
   const divFatherGameOver = document.getElementsByClassName('gameContainer')
   divGameOver.setAttribute('class', 'gameOver')
@@ -182,6 +177,32 @@ Game.prototype.bulletStormtrooperCollision = function () {
   }
 }
 
+Game.prototype.bulletMileniumFalconCollision = function () {
+  for (let i = 0; i < this.stormtroopersBullets.length; i++) {
+    for (let j = 0; j < this.milleniumFalcon1.length; j++) {
+      const bulletStormtrooperLeft = this.stormtroopersBullets[i].position.left
+      const mileniumFalconRight = this.milleniumFalcon1[j].position.left + this.milleniumFalcon1[j].width
+      const bulletStormtrooperRight = this.stormtroopersBullets[i].position.left + this.stormtroopersBullets[i].width
+      const mileniumFalconLeft = this.milleniumFalcon1[j].position.left
+      const bulletStormtrooperTop = this.stormtroopersBullets[i].position.top
+      const mileniumFalconBottom = this.milleniumFalcon1[j].position.top + this.milleniumFalcon1[j].height
+      const bulletStormtrooperBottom = this.stormtroopersBullets[i].position.top + this.stormtroopersBullets[i].height
+      const mileniumFalconTop = this.milleniumFalcon1[j].position.top
+
+      if (bulletStormtrooperLeft < mileniumFalconRight && bulletStormtrooperRight > mileniumFalconLeft && bulletStormtrooperTop < mileniumFalconBottom && bulletStormtrooperBottom > mileniumFalconTop) {
+        console.log('HAY COLISIÓN')
+        this.stormtroopersBullets[i].destroy()
+        if (this.milleniumFalcon1[j].destroyed === false) {
+          this.milleniumFalcon1[j].destroy()
+          // this.scoreCounter += 1
+          // this.score[0].innerHTML = parseInt(this.scoreCounter)
+
+        }
+      }
+    }
+  }
+}
+
 Game.prototype.youWin = function () {
   if (this.score[0].innerHTML === "105") {
     clearInterval(this.gameTimer)
@@ -197,48 +218,35 @@ Game.prototype.youWinScreen = function () {
 }
 
 Game.prototype.listenKeys = function () {
-  window.addEventListener('keydown', this.bindedAddEventListener )
+  window.addEventListener('keydown', this.bindedAddEventListener)
 
 }
 
-Game.prototype.addEventListenerCallBack = function(e) {
-    if (e.key === 'ArrowLeft') {
-      this.milleniumFalcon1.direction = -1
-    } else if (e.key === 'ArrowRight') {
-      this.milleniumFalcon1.direction = 1
-    } if (e.code === 'Space') {
-      this.sounds.shoot.currentTime = 0
-      this.addNewBullet()
-      this.sounds.shoot.play()
-    }
-    if (e.key === 'Enter') {
-      document.getElementsByClassName("gameStart")[0].remove()
-      this.startGame()    }
-    if (e.key === 'Backspace') {
-      document.getElementsByClassName("gameOver")[0].remove()
-      this.initialScreen()
-    }
-    if (e.key === 'Escape') {
-      document.getElementsByClassName("youWin")[0].remove()
-      this.initialScreen()
-    }
+Game.prototype.addEventListenerCallBack = function (e) {
+  if (e.key === 'ArrowLeft') {
+    this.milleniumFalcon1.direction = -1
+  } else if (e.key === 'ArrowRight') {
+    this.milleniumFalcon1.direction = 1
+  } if (e.code === 'Space') {
+    this.sounds.shoot.currentTime = 0
+    this.addNewBullet()
+    this.sounds.shoot.play()
+  }
+  if (e.key === 'Enter') {
+    document.getElementsByClassName("gameStart")[0].remove()
+    this.startGame()
+  }
+  if (e.key === 'Backspace') {
+    document.getElementsByClassName("gameOver")[0].remove()
+    this.initialScreen()
+  }
+  if (e.key === 'Escape') {
+    document.getElementsByClassName("youWin")[0].remove()
+    this.initialScreen()
+  }
 }
 
 const game = new Game()
 game.initialScreen()
-
-
-
-/*
-1. Añadir array en game para guardar balas de los stormtroopers
-  - Línea 10 en game.js
-
-2. Pasar a las balas por parametros x, y e direction (para poder elegir donde aparacen y si suben o bajan (ya no salen solo del milleiunFalcon1).
-  - Línea 1 y 3 bullet.js añadido los parámetros
-  
-3. Crear un nuevo método que genere una bala siempre que el array de las balas nuevas este vacio (esto conlleva seleccionar un stormtrooper random para conocer donde aparece la bala, aunque inicialmente podemos hacerlo a mano para ver que funciona).
-  - Línea 91 a la 109 game.js
-
-*/
 
 

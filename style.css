@@ -116,6 +116,16 @@ footer {
 
 }
 
+.redBullet {
+    background: url('/assets/redBullet.png');
+    width: 2px;
+    height: 25px;
+    position: absolute;
+    z-index: 1;
+    transition: all 0.1s ease;
+
+}
+
 #milleniumFalcon {
     background: url('/assets/milleniumFalcon.png');
     width: 50px;
