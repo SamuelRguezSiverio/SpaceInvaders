@@ -39,13 +39,12 @@ Stormtrooper.prototype.updateY = function () {
 Stormtrooper.prototype.draw = function () {
   this.domStormtrooper.style.left = this.position.left + "px"
   this.domStormtrooper.style.top = this.position.top + "px"
-  if ( this.isFirstRender === true ){
+  if (this.isFirstRender === true) {
     this.domStormtrooper.setAttribute('id', 'stormtrooper')
     this.father[0].appendChild(this.domStormtrooper)
     this.isFirstRender = false
   }
 }
-
 
 Stormtrooper.prototype.destroy = function () {
   this.father[0].removeChild(this.domStormtrooper)

@@ -7,6 +7,7 @@ function Game() {
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
   this.bullets = []
+  this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score = document.getElementsByClassName('score')
   this.score[0].innerHTML = '0'
@@ -22,9 +23,9 @@ function Game() {
   this.sounds.shoot.volume = 0.2
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
-  this.sounds.startGameSound.volume = 0.2
+  this.sounds.startGameSound.volume = 0.1
 }
- 
+
 Game.prototype.gameLoop = function () {
   this.update()
   this.draw()
@@ -32,11 +33,12 @@ Game.prototype.gameLoop = function () {
 
 Game.prototype.update = function () {
   this.bulletStormtrooperCollision()
-  this.milleniumFalcon1.update()
   this.removeBullets()
   this.removeStormtroopers()
+  this.milleniumFalcon1.update()
   this.updateBullets()
   this.updateStormtroopers()
+  this.stormtrooperShoot()
   this.gameOver()
   this.youWin()
 }
@@ -60,7 +62,7 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
-  window.removeEventListener('keydown', this.bindedAddEventListener )
+  window.removeEventListener('keydown', this.bindedAddEventListener)
   const divStart = document.createElement('div')
   const divFatherStart = document.getElementsByClassName('gameContainer')
   divStart.setAttribute('class', 'gameStart')
@@ -68,10 +70,10 @@ Game.prototype.initialScreen = function () {
   this.listenKeys()
 }
 
-Game.prototype.cleanDOM = function() {
+Game.prototype.cleanDOM = function () {
   const main = document.querySelector('.main')
   const mainChild = document.querySelectorAll('.main > *')
-  for ( let i = 0; i < mainChild.length; i++ ){
+  for (let i = 0; i < mainChild.length; i++) {
     main.removeChild(mainChild[i])
   }
 }
@@ -80,6 +82,7 @@ Game.prototype.startGame = function () {
   this.cleanDOM()
   this.milleniumFalcon1 = new MilleniumFalcon()
   this.bullets = []
+  this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
@@ -88,12 +91,15 @@ Game.prototype.startGame = function () {
 }
 
 Game.prototype.addNewBullet = function () {
-  this.bullets.push(new Bullet(this.milleniumFalcon1.position.left + 25))
+  this.bullets.push(new Bullet(this.milleniumFalcon1.position.left + 25, 410, 1))
 }
 
 Game.prototype.updateBullets = function () {
   for (let i = 0; i < this.bullets.length; i++) {
     this.bullets[i].update()
+  }
+  for (let i = 0; i < this.stormtroopersBullets.length; i++) {
+    this.stormtroopersBullets[i].update()
   }
 }
 
@@ -101,10 +107,14 @@ Game.prototype.drawBullets = function () {
   for (let i = 0; i < this.bullets.length; i++) {
     this.bullets[i].draw()
   }
+  for (let i = 0; i < this.stormtroopersBullets.length; i++) {
+    this.stormtroopersBullets[i].draw()
+  }
 }
 
 Game.prototype.removeBullets = function () {
   this.bullets = this.bullets.filter((bullet) => bullet.destroyed === false)
+  this.stormtroopersBullets = this.stormtroopersBullets.filter((bullet) => bullet.destroyed === false)
 }
 
 Game.prototype.removeStormtroopers = function () {
@@ -117,7 +127,16 @@ Game.prototype.gameOver = function () {
       clearInterval(this.gameTimer)
       this.gameOverScreen()
       break
-    } 
+    }
+  }
+}
+
+Game.prototype.stormtrooperShoot = function () {
+  if (this.stormtroopersBullets.length === 0) {
+    const whoShoot = Math.floor(Math.random() * this.stormtroopers.length)
+    const selectedStormtrooper = this.stormtroopers[whoShoot]
+    this.stormtroopersBullets.push(new Bullet(selectedStormtrooper.position.left + selectedStormtrooper.width / 2, selectedStormtrooper.position.top + selectedStormtrooper.height, -1))
+
   }
 }
 
@@ -173,42 +192,33 @@ Game.prototype.youWinScreen = function () {
 }
 
 Game.prototype.listenKeys = function () {
-  window.addEventListener('keydown', this.bindedAddEventListener )
+  window.addEventListener('keydown', this.bindedAddEventListener)
 
 }
 
-Game.prototype.addEventListenerCallBack = function(e) {
-    if (e.key === 'ArrowLeft') {
-      this.milleniumFalcon1.direction = -1
-    } else if (e.key === 'ArrowRight') {
-      this.milleniumFalcon1.direction = 1
-    } if (e.code === 'Space') {
-      this.sounds.shoot.currentTime = 0
-      this.addNewBullet()
-      this.sounds.shoot.play()
-    }
-    if (e.key === 'Enter') {
-      document.getElementsByClassName("gameStart")[0].remove()
-      this.startGame()
-    }
-    if (e.key === 'Backspace') {
-      document.getElementsByClassName("gameOver")[0].remove()
-      this.initialScreen()
-    }
-    if (e.key === 'Escape') {
-      document.getElementsByClassName("youWin")[0].remove()
-      this.initialScreen()
-    }
+Game.prototype.addEventListenerCallBack = function (e) {
+  if (e.key === 'ArrowLeft') {
+    this.milleniumFalcon1.direction = -1
+  } else if (e.key === 'ArrowRight') {
+    this.milleniumFalcon1.direction = 1
+  } if (e.code === 'Space') {
+    this.sounds.shoot.currentTime = 0
+    this.addNewBullet()
+    this.sounds.shoot.play()
+  }
+  if (e.key === 'Enter') {
+    document.getElementsByClassName("gameStart")[0].remove()
+    this.startGame()
+  }
+  if (e.key === 'Backspace') {
+    document.getElementsByClassName("gameOver")[0].remove()
+    this.initialScreen()
+  }
+  if (e.key === 'Escape') {
+    document.getElementsByClassName("youWin")[0].remove()
+    this.initialScreen()
+  }
 }
 
 const game = new Game()
 game.initialScreen()
-
-
-// hacer que los stormtrooper disparen y resten vidas & crear un límite de vidas para el millenium falcom
-
-// git checkout -b nombredelarama
-// git branch
-// git push origin nombredelarama
-
-
