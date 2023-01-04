@@ -1,6 +1,8 @@
-export function MilleniumFalcon() {
-    this.position = {left: 135, top: 410}
+export function MilleniumFalcon(paramLeft, paramTop) {
+  this.position = { left: paramLeft, top: paramTop }
     this.direction = 0
+    this.width = 50
+    this.height = 50
     this.domMilleniumFalcon = document.createElement('div')
     this.father = document.getElementsByClassName('main')
     this.isFirstRender = true

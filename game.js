@@ -3,7 +3,7 @@ import { Stormtrooper } from "./stormtrooper.js"
 import { Bullet } from "./bullet.js"
 
 function Game() {
-  this.milleniumFalcon1 = new MilleniumFalcon()
+  this.milleniumFalcon1 = new MilleniumFalcon(135, 410)
   this.bindedGameLoop = this.gameLoop.bind(this)
   this.bindedAddEventListener = this.addEventListenerCallBack.bind(this)
   this.bullets = []
@@ -12,6 +12,9 @@ function Game() {
   this.score = document.getElementsByClassName('score')
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
+  this.milleniumFalcon1Hp = document.getElementsByClassName('milleniumFalconHp')
+  this.milleniumFalcon1Hp[0].innerHTML = '3'
+  this.milleniumFalcon1HpCounter = 3
   this.gameTimer = null
   this.sounds = {
     shoot: new Audio('assets/LaserShoot.mp3'),
@@ -19,7 +22,6 @@ function Game() {
     gameOverSound: new Audio('assets/hansolo_badfeeling.mp3'),
     startGameSound: new Audio('assets/spaceInvaderMusic.mp3')
   }
-
   this.sounds.shoot.volume = 0.2
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
@@ -116,7 +118,7 @@ Game.prototype.removeStormtroopers = function () {
 
 Game.prototype.gameOver = function () {
   for (let i = 0; i < this.stormtroopers.length; i++) {
-    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 430) {
+    if (this.stormtroopers[i].position.top + this.stormtroopers[i].height >= 430 || this.milleniumFalcon1HpCounter === 0) {
       clearInterval(this.gameTimer)
       this.gameOverScreen()
       break
@@ -128,18 +130,20 @@ Game.prototype.stormtrooperShoot = function () {
   if (this.stormtroopersBullets.length === 0) {
     const whoShoot = Math.floor(Math.random() * this.stormtroopers.length)
     const selectedStormtrooper = this.stormtroopers[whoShoot]
-    this.stormtroopersBullets.push(new Bullet(selectedStormtrooper.position.left + selectedStormtrooper.width / 2, selectedStormtrooper.position.top + selectedStormtrooper.height, -1))
+    this.stormtroopersBullets.push(new Bullet(selectedStormtrooper.position.left + selectedStormtrooper.width / 2, selectedStormtrooper.position.top + selectedStormtrooper.height, -1, 1))
   }
 }
 
 Game.prototype.gameOverScreen = function () {
   this.cleanDOM()
-  this.milleniumFalcon1 = new MilleniumFalcon()
+  this.milleniumFalcon1 = new MilleniumFalcon(135, 410)
   this.bullets = []
   this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
   this.score[0].innerHTML = '0'
   this.scoreCounter = 0
+  this.milleniumFalcon1Hp[0].innerHTML = '3'
+  this.milleniumFalcon1HpCounter = 3
   this.gameTimer = null
   const divGameOver = document.createElement('div')
   const divFatherGameOver = document.getElementsByClassName('gameContainer')
@@ -179,29 +183,23 @@ Game.prototype.bulletStormtrooperCollision = function () {
 
 Game.prototype.bulletMileniumFalconCollision = function () {
   for (let i = 0; i < this.stormtroopersBullets.length; i++) {
-    for (let j = 0; j < this.milleniumFalcon1.length; j++) {
-      const bulletStormtrooperLeft = this.stormtroopersBullets[i].position.left
-      const mileniumFalconRight = this.milleniumFalcon1[j].position.left + this.milleniumFalcon1[j].width
-      const bulletStormtrooperRight = this.stormtroopersBullets[i].position.left + this.stormtroopersBullets[i].width
-      const mileniumFalconLeft = this.milleniumFalcon1[j].position.left
-      const bulletStormtrooperTop = this.stormtroopersBullets[i].position.top
-      const mileniumFalconBottom = this.milleniumFalcon1[j].position.top + this.milleniumFalcon1[j].height
-      const bulletStormtrooperBottom = this.stormtroopersBullets[i].position.top + this.stormtroopersBullets[i].height
-      const mileniumFalconTop = this.milleniumFalcon1[j].position.top
+    const bulletStormtrooperLeft = this.stormtroopersBullets[i].position.left
+    const mileniumFalconRight = this.milleniumFalcon1.position.left + this.milleniumFalcon1.width
+    const bulletStormtrooperRight = this.stormtroopersBullets[i].position.left + this.stormtroopersBullets[i].width
+    const mileniumFalconLeft = this.milleniumFalcon1.position.left
+    const bulletStormtrooperTop = this.stormtroopersBullets[i].position.top
+    const mileniumFalconBottom = this.milleniumFalcon1.position.top + this.milleniumFalcon1.height
+    const bulletStormtrooperBottom = this.stormtroopersBullets[i].position.top + this.stormtroopersBullets[i].height
+    const mileniumFalconTop = this.milleniumFalcon1.position.top
 
-      if (bulletStormtrooperLeft < mileniumFalconRight && bulletStormtrooperRight > mileniumFalconLeft && bulletStormtrooperTop < mileniumFalconBottom && bulletStormtrooperBottom > mileniumFalconTop) {
-        console.log('HAY COLISIÓN')
-        this.stormtroopersBullets[i].destroy()
-        if (this.milleniumFalcon1[j].destroyed === false) {
-          this.milleniumFalcon1[j].destroy()
-          // this.scoreCounter += 1
-          // this.score[0].innerHTML = parseInt(this.scoreCounter)
-
-        }
-      }
+    if (bulletStormtrooperLeft < mileniumFalconRight && bulletStormtrooperRight > mileniumFalconLeft && bulletStormtrooperTop < mileniumFalconBottom && bulletStormtrooperBottom > mileniumFalconTop) {
+      this.stormtroopersBullets[i].destroy()
+      this.milleniumFalcon1HpCounter -= 1
+      this.milleniumFalcon1Hp[0].innerHTML = parseInt(this.milleniumFalcon1HpCounter)
     }
   }
 }
+
 
 Game.prototype.youWin = function () {
   if (this.score[0].innerHTML === "105") {
@@ -211,6 +209,16 @@ Game.prototype.youWin = function () {
 }
 
 Game.prototype.youWinScreen = function () {
+  this.cleanDOM()
+  this.milleniumFalcon1 = new MilleniumFalcon(135, 410)
+  this.bullets = []
+  this.stormtroopersBullets = []
+  this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
+  this.score[0].innerHTML = '0'
+  this.scoreCounter = 0
+  this.milleniumFalcon1Hp[0].innerHTML = '3'
+  this.milleniumFalcon1HpCounter = 3
+  this.gameTimer = null
   const divYouWin = document.createElement('div')
   const divFatherYouWin = document.getElementsByClassName('gameContainer')
   divYouWin.setAttribute('class', 'youWin')
@@ -239,6 +247,7 @@ Game.prototype.addEventListenerCallBack = function (e) {
   if (e.key === 'Backspace') {
     document.getElementsByClassName("gameOver")[0].remove()
     this.initialScreen()
+
   }
   if (e.key === 'Escape') {
     document.getElementsByClassName("youWin")[0].remove()

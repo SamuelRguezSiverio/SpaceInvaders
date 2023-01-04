@@ -135,3 +135,12 @@ footer {
     transition: all 0.1s ease;
 
 }
+
+#footerBox {
+    display: flex;
+    flex-direction: row;
+}
+
+#footerBox>div {
+    margin: 0 auto;
+}

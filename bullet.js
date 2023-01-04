@@ -1,4 +1,4 @@
-export function Bullet(x, y, dir) {
+export function Bullet(x, y, dir, whoShoot) {
   this.position = { left: x, top: y }
   this.direction = dir
   this.speed = 10
@@ -8,6 +8,7 @@ export function Bullet(x, y, dir) {
   this.father = document.getElementsByClassName('main')
   this.destroyed = false
   this.isFirstRender = true
+  this.isStormtrooperBulletRender = whoShoot
 }
 
 Bullet.prototype.update = function () {
@@ -30,6 +31,12 @@ Bullet.prototype.draw = function () {
     this.sprite.setAttribute('class', 'bullet')
     this.father[0].appendChild(this.sprite)
     this.isFirstRender = false
+  }
+  if (this.isStormtrooperBulletRender === 1) {
+    this.sprite.setAttribute('class', 'redBullet')
+    this.father[0].appendChild(this.sprite)
+    this.isStormtrooperBulletRender = 0
+
   }
 }
 
