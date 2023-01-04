@@ -17,15 +17,19 @@ function Game() {
   this.milleniumFalcon1HpCounter = 3
   this.gameTimer = null
   this.sounds = {
-    shoot: new Audio('assets/LaserShoot.mp3'),
-    stormtrooperDestroyed: new Audio('assets/StormtrooperDestroyed.mp3'),
-    gameOverSound: new Audio('assets/hansolo_badfeeling.mp3'),
-    startGameSound: new Audio('assets/spaceInvaderMusic.mp3')
+    shoot: new Audio('./assets/LaserShoot.mp3'),
+    stormtrooperDestroyed: new Audio('./assets/StormtrooperDestroyed.mp3'),
+    gameOverSound: new Audio('./assets/hansolo_badfeeling.mp3'),
+    startGameSound: new Audio('./assets/spaceInvaderMusic.mp3'),
+    stormtrooperShoot: new Audio('./assets/stormtrooperShoot.mp3'),
+    youWinSound: new Audio('./assets/youWin.mp3')
   }
   this.sounds.shoot.volume = 0.2
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
+  this.sounds.youWinSound.volume = 0.2
   this.sounds.startGameSound.volume = 0.1
+  this.sounds.stormtrooperShoot.volume = 0.2
 }
 
 Game.prototype.gameLoop = function () {
@@ -194,6 +198,8 @@ Game.prototype.bulletMileniumFalconCollision = function () {
     const mileniumFalconTop = this.milleniumFalcon1.position.top
 
     if (bulletStormtrooperLeft < mileniumFalconRight && bulletStormtrooperRight > mileniumFalconLeft && bulletStormtrooperTop < mileniumFalconBottom && bulletStormtrooperBottom > mileniumFalconTop) {
+      this.sounds.stormtrooperShoot.currentTime = 0.1
+      this.sounds.stormtrooperShoot.play()
       this.stormtroopersBullets[i].destroy()
       this.milleniumFalcon1HpCounter -= 1
       this.milleniumFalcon1Hp[0].innerHTML = parseInt(this.milleniumFalcon1HpCounter)
@@ -220,6 +226,7 @@ Game.prototype.youWinScreen = function () {
   const divFatherYouWin = document.getElementsByClassName('gameContainer')
   divYouWin.setAttribute('class', 'youWin')
   divFatherYouWin[0].appendChild(divYouWin)
+  this.sounds.youWinSound.play()
 }
 
 Game.prototype.listenKeys = function () {
@@ -244,7 +251,6 @@ Game.prototype.addEventListenerCallBack = function (e) {
   if (e.key === 'Backspace') {
     document.getElementsByClassName("gameOver")[0].remove()
     this.initialScreen()
-
   }
   if (e.key === 'Escape') {
     document.getElementsByClassName("youWin")[0].remove()
