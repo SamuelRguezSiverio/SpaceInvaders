@@ -28,7 +28,7 @@ function Game() {
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
   this.sounds.youWinSound.volume = 0.2
-  this.sounds.startGameSound.volume = 0.1
+  this.sounds.startGameSound.volume = 0.01
   this.sounds.stormtrooperShoot.volume = 0.2
 }
 
@@ -246,6 +246,7 @@ Game.prototype.addEventListenerCallBack = function (e) {
   }
   if (e.key === 'Enter') {
     document.getElementsByClassName("gameStart")[0].remove()
+    this.sounds.startGameSound.play()
     this.startGame()
   }
   if (e.key === 'Backspace') {
