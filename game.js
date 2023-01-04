@@ -28,7 +28,7 @@ function Game() {
   this.sounds.stormtrooperDestroyed.volume = 0.2
   this.sounds.gameOverSound.volume = 0.2
   this.sounds.youWinSound.volume = 0.2
-  this.sounds.startGameSound.volume = 0.01
+  this.sounds.startGameSound.volume = 0.02
   this.sounds.stormtrooperShoot.volume = 0.2
 }
 
