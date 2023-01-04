@@ -34,10 +34,10 @@ Game.prototype.gameLoop = function () {
 }
 
 Game.prototype.update = function () {
-  this.bulletStormtrooperCollision()
-  this.bulletMileniumFalconCollision()
   this.removeBullets()
   this.removeStormtroopers()
+  this.bulletStormtrooperCollision()
+  this.bulletMileniumFalconCollision()
   this.milleniumFalcon1.update()
   this.updateBullets()
   this.updateStormtroopers()
@@ -65,6 +65,10 @@ Game.prototype.drawStormtroopers = function () {
 }
 
 Game.prototype.initialScreen = function () {
+  this.score[0].innerHTML = '0'
+  this.scoreCounter = 0
+  this.milleniumFalcon1Hp[0].innerHTML = '3'
+  this.milleniumFalcon1HpCounter = 3
   window.removeEventListener('keydown', this.bindedAddEventListener)
   const divStart = document.createElement('div')
   const divFatherStart = document.getElementsByClassName('gameContainer')
@@ -127,7 +131,7 @@ Game.prototype.gameOver = function () {
 }
 
 Game.prototype.stormtrooperShoot = function () {
-  if (this.stormtroopersBullets.length === 0) {
+  if (this.stormtroopersBullets.length === 0 && this.stormtroopers.length >= 1) {
     const whoShoot = Math.floor(Math.random() * this.stormtroopers.length)
     const selectedStormtrooper = this.stormtroopers[whoShoot]
     this.stormtroopersBullets.push(new Bullet(selectedStormtrooper.position.left + selectedStormtrooper.width / 2, selectedStormtrooper.position.top + selectedStormtrooper.height, -1, 1))
@@ -140,10 +144,7 @@ Game.prototype.gameOverScreen = function () {
   this.bullets = []
   this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
-  this.score[0].innerHTML = '0'
-  this.scoreCounter = 0
-  this.milleniumFalcon1Hp[0].innerHTML = '3'
-  this.milleniumFalcon1HpCounter = 3
+
   this.gameTimer = null
   const divGameOver = document.createElement('div')
   const divFatherGameOver = document.getElementsByClassName('gameContainer')
@@ -214,10 +215,6 @@ Game.prototype.youWinScreen = function () {
   this.bullets = []
   this.stormtroopersBullets = []
   this.stormtroopers = [new Stormtrooper(40, 15), new Stormtrooper(105, 15), new Stormtrooper(170, 15), new Stormtrooper(235, 15), new Stormtrooper(68, 75), new Stormtrooper(133, 75), new Stormtrooper(198, 75),]
-  this.score[0].innerHTML = '0'
-  this.scoreCounter = 0
-  this.milleniumFalcon1Hp[0].innerHTML = '3'
-  this.milleniumFalcon1HpCounter = 3
   this.gameTimer = null
   const divYouWin = document.createElement('div')
   const divFatherYouWin = document.getElementsByClassName('gameContainer')
