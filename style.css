@@ -7,7 +7,7 @@ body {
     overflow: hidden;
     background-color: #000020;
     margin: 0;
-    background: url(/assets/background.jpg);
+    background: url('./assets/background.jpg');
     background-position: center;
 }
 
@@ -31,7 +31,7 @@ body {
 .main {
     width: 320px;
     height: 480px;
-    background: url('/assets/backgroundSpace.png');
+    background: url('./assets/backgroundSpace.png');
     animation: scroll-background 10s linear infinite;
     box-shadow: 0 2px 15px #9068d8;
     position: relative;
@@ -41,7 +41,7 @@ body {
 .gameStart {
     width: 320px;
     height: 480px;
-    background: url('/assets/IntroSpaceInvaders.gif');
+    background: url('./assets/IntroSpaceInvaders.gif');
     position: absolute;
     z-index: 1;
 }
@@ -49,7 +49,7 @@ body {
 .gameOver {
     width: 320px;
     height: 480px;
-    background: url('/assets/GameOverSpaceInvaders.gif');
+    background: url('./assets/GameOverSpaceInvaders.gif');
     position: absolute;
     z-index: 1;
 }
@@ -57,7 +57,7 @@ body {
 .youWin {
     width: 320px;
     height: 480px;
-    background: url(/assets/YouWinSpaceInvaders.gif);
+    background: url('./assets/YouWinSpaceInvaders.gif');
     position: absolute;
     z-index: 1;
 }
@@ -96,7 +96,7 @@ footer {
 }
 
 #stormtrooper {
-    background: url('/assets/stormtrooper.png');
+    background: url('./assets/stormtrooper.png');
     background-size: contain;
     width: 36px;
     height: 50px;
@@ -107,7 +107,7 @@ footer {
 }
 
 .bullet {
-    background: url('/assets/bullet.png');
+    background: url('./assets/bullet.png');
     width: 2px;
     height: 25px;
     position: absolute;
@@ -117,7 +117,7 @@ footer {
 }
 
 .redBullet {
-    background: url('/assets/redBullet.png');
+    background: url('./assets/redBullet.png');
     width: 2px;
     height: 25px;
     position: absolute;
@@ -127,7 +127,7 @@ footer {
 }
 
 #milleniumFalcon {
-    background: url('/assets/milleniumFalcon.png');
+    background: url('./assets/milleniumFalcon.png');
     width: 50px;
     height: 50px;
     position: absolute;
